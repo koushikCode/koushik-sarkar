@@ -35,16 +35,16 @@ $(document).ready(function(){
 
     // typing text animation script
     var typed = new Typed(".typing", {
-        strings: ["Informatica ETL Developer", "Web Developer", "Programmer"],
-        typeSpeed: 90,
-        backSpeed: 50,
+        strings: ["an Informatica ETL Developer", "a Web Developer", "a Programmer"],
+        typeSpeed: 70,
+        backSpeed: 40,
         loop: true
     });
 
     var typed = new Typed(".typing-2", {
-        strings: ["Informatica ETL Developer", "Web Developer", "Programmer"],
-        typeSpeed: 90,
-        backSpeed: 50,
+        strings: ["an ETL Developer", "a Web Developer", "a Programmer"],
+        typeSpeed: 70,
+        backSpeed: 40,
         loop: true
     });
 
