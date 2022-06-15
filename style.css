@@ -270,7 +270,7 @@ section .title::after{
 .services .title::after,
 .teams .title::after{
     background: #111;
-    content: "services";
+    content: "forte";
 }
 .services .serv-content .card{
     width: calc(33% - 20px);
@@ -364,19 +364,19 @@ section .title::after{
     background: #4162ab;
 }
 .skills-content .right .html::before{
-    width: 80%;
+    width: 85%;
 }
 .skills-content .right .css::before{
-    width: 80%;
+    width: 85%;
 }
 .skills-content .right .js::before{
-    width: 75%;
+    width: 80%;
 }
 .skills-content .right .php::before{
     width: 80%;
 }
 .skills-content .right .mysql::before{
-    width: 85%;
+    width: 75%;
 }
 .skills-content .right .SAP::before{
     width: 65%;
