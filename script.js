@@ -1,73 +1,157 @@
-$(document).ready(function(){
-    $(window).scroll(function(){
-        // sticky navbar on scroll script
-        if(this.scrollY > 20){
-            $('.navbar').addClass("sticky");
-        }else{
-            $('.navbar').removeClass("sticky");
+$(document).ready(function () {
+    const $window = $(window);
+    const $navbar = $('.navbar');
+    const $scrollUpBtn = $('.scroll-up-btn');
+    const $menu = $('.navbar .menu');
+    const $menuToggle = $('.menu-toggle');
+    const $menuIcon = $('.menu-toggle i');
+    const $navLinks = $('.navbar .menu li a');
+    const sections = $('section[id]');
+
+    function handleScrollState() {
+        const scrollY = window.scrollY;
+
+        if (scrollY > 40) {
+            $navbar.addClass('sticky');
+        } else {
+            $navbar.removeClass('sticky');
         }
-        
-        // scroll-up button show/hide script
-        if(this.scrollY > 500){
-            $('.scroll-up-btn').addClass("show");
-        }else{
-            $('.scroll-up-btn').removeClass("show");
+
+        if (scrollY > 520) {
+            $scrollUpBtn.addClass('show');
+        } else {
+            $scrollUpBtn.removeClass('show');
+        }
+
+        let currentSectionId = '';
+
+        sections.each(function () {
+            const sectionTop = $(this).offset().top - 160;
+            const sectionHeight = $(this).outerHeight();
+
+            if (scrollY >= sectionTop && scrollY < sectionTop + sectionHeight) {
+                currentSectionId = $(this).attr('id');
+            }
+        });
+
+        if (currentSectionId) {
+            $navLinks.removeClass('active');
+            $navLinks.each(function () {
+                if ($(this).attr('href') === `#${currentSectionId}`) {
+                    $(this).addClass('active');
+                }
+            });
+        }
+    }
+
+    function closeMenu() {
+        $menu.removeClass('active');
+        $menuToggle.attr('aria-expanded', 'false');
+        $menuIcon.removeClass('active').removeClass('fa-times').addClass('fa-bars');
+    }
+
+    $window.on('scroll', handleScrollState);
+    handleScrollState();
+
+    $scrollUpBtn.on('click keypress', function (event) {
+        if (event.type === 'keypress' && event.which !== 13) {
+            return;
+        }
+
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+    });
+
+    $menuToggle.on('click keypress', function (event) {
+        if (event.type === 'keypress' && event.which !== 13) {
+            return;
+        }
+
+        $menu.toggleClass('active');
+        $menuToggle.attr('aria-expanded', $menu.hasClass('active') ? 'true' : 'false');
+        $menuIcon.toggleClass('fa-times');
+        $menuIcon.toggleClass('fa-bars');
+    });
+
+    $navLinks.on('click', function () {
+        closeMenu();
+    });
+
+    $(document).on('keydown', function (event) {
+        if (event.key === 'Escape' && $menu.hasClass('active')) {
+            closeMenu();
         }
     });
 
-    // slide-up script
-    $('.scroll-up-btn').click(function(){
-        $('html').animate({scrollTop: 0});
-        // removing smooth scroll on slide-up button click
-        $('html').css("scrollBehavior", "auto");
-    });
+    const typingStrings = ['an ETL Developer', 'a Data Engineer', 'a Programmer'];
 
-    $('.navbar .menu li a').click(function(){
-        // applying again smooth scroll on menu items click
-        $('html').css("scrollBehavior", "smooth");
-    });
-
-    // toggle menu/navbar script
-    $('.menu-btn').click(function(){
-        $('.navbar .menu').toggleClass("active");
-        $('.menu-btn i').toggleClass("active");
-    });
-
-    // typing text animation script
-    var typed = new Typed(".typing", {
-        strings: ["an ETL Developer", "a Data Engineer", "a Programmer"],
-        typeSpeed: 70,
-        backSpeed: 40,
+    new Typed('.typing', {
+        strings: typingStrings,
+        typeSpeed: 65,
+        backSpeed: 38,
+        backDelay: 1200,
         loop: true
     });
 
-    var typed = new Typed(".typing-2", {
-        strings: ["an ETL Developer", "a Data Engineer", "a Programmer"],
-        typeSpeed: 70,
-        backSpeed: 40,
+    new Typed('.typing-2', {
+        strings: typingStrings,
+        typeSpeed: 65,
+        backSpeed: 38,
+        backDelay: 1200,
         loop: true
     });
 
-    // owl carousel script
     $('.carousel').owlCarousel({
         margin: 20,
         loop: true,
         autoplay: true,
-        autoplayTimeOut: 2000,
+        autoplayTimeout: 2600,
         autoplayHoverPause: true,
+        smartSpeed: 900,
+        dotsEach: false,
         responsive: {
-            0:{
+            0: {
                 items: 1,
                 nav: false
             },
-            600:{
+            700: {
                 items: 2,
                 nav: false
             },
-            1000:{
+            1100: {
                 items: 3,
                 nav: false
             }
         }
     });
+
+    const revealItems = document.querySelectorAll('[data-reveal]');
+
+    if ('IntersectionObserver' in window) {
+        const observer = new IntersectionObserver(
+            (entries) => {
+                entries.forEach((entry) => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('is-visible');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            },
+            {
+                threshold: 0.18,
+                rootMargin: '0px 0px -40px 0px'
+            }
+        );
+
+        revealItems.forEach((item) => observer.observe(item));
+    } else {
+        revealItems.forEach((item) => item.classList.add('is-visible'));
+    }
+
+    const yearElement = document.getElementById('year');
+    if (yearElement) {
+        yearElement.textContent = new Date().getFullYear();
+    }
 });
